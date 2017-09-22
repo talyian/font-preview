@@ -1,0 +1,79 @@
+<style>
+ html, body { font-family: "Helvetica"; }
+ #main-text { background:#999; padding:5px; }
+ li:hover { background:#ace; }
+ #header>div { width:400px; display:inline-block; vertical-align:top; }
+</style>
+
+<div id=header>
+<div> <b> Fonts </b>
+<ul id=ul-fonts onclick='ulclicked()'>
+    <li>Inconsolata</li>
+    <li>Monaco</li>
+    <li>Consolas</li>
+    <li>Lucida Console</li>
+    <li>Source Code Pro</li>
+    <li>Droid Sans Mono</li>
+    <li>Ubuntu Mono</li>
+    <li>Anonymous Pro</li>    
+</ul>
+</div>
+<div> <b> Colors </b>
+<ul id=ul-colors onclick='colorset()'>
+    <li>default</li>
+    <li>agate</li>
+    <li>vs</li>
+    <li>vs2015</li>
+    <li>zenburn</li>
+</ul>
+</div>
+</div>
+<pre id=main-text class='cpp'><code class='cpp'>#include &lt;stdio.h>
+#include &lt;stdint.h>
+#include "fizzbuzz.h"
+
+void FizzBuzzer::fizzBuzz(int32_t n) {
+    for (int32_t i=0; i&lt;n; i++) {
+        if (i % 15 == 0) printf("fizzbuzz\n");
+        else if (i % 3 == 0) printf("fizz\n");
+        else if (i % 5 == 0) printf("buzz\n")
+        else printf("%d\n", i);
+    }
+}
+</code></pre>
+
+<link id=col-default rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" >
+<link id=col-agate rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/agate.min.css" disabled>
+<link id=col-vs rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs.min.css" disabled>
+<link id=col-vs2015 rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css" disabled>
+<link id=col-zenburn rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/zenburn.min.css" disabled>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/cpp.min.js"></script>
+<!-- <script src='font-preview.js'> </script> -->
+<style>
+ @import url('https://fonts.googleapis.com/css?family=Inconsolata');
+ @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+ @import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
+ @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
+ @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro'); 
+</style>
+<script>
+ hljs.initHighlightingOnLoad();
+ var codeElement = document.getElementById('main-text').children[0]
+ function setFont(f) {
+     codeElement.style.fontFamily = f;
+ }
+ function ulclicked(e) {
+     e = e || window.event;
+     setFont(e.target && e.target.innerText);
+ }
+ curcolor = 'default';
+ function colorset(e) {
+     e = e || window.event;
+     var c = e.target && e.target.innerText;
+     document.getElementById('col-' + curcolor).disabled = true;
+     document.getElementById('col-' + c).disabled = false;
+     curcolor = c;
+ }
+</script>
