@@ -1,11 +1,14 @@
 <style>
  html, body { font-family: "Helvetica"; }
  #main-text { background:#999; padding:5px; }
+ ul { list-style-type: none; margin:0px; padding:0px; }
+ li { border:1px solid #999; padding:3px; cursor:hand; }
  li:hover { background:#ace; }
- #header>div { width:400px; display:inline-block; vertical-align:top; }
+ #header>div { width:200px; display:inline-block; vertical-align:top; }
 </style>
 
 <div id=header>
+
 <div> <b> Fonts </b>
 <ul id=ul-fonts onclick='ulclicked()'>
     <li>Inconsolata</li>
@@ -18,6 +21,7 @@
     <li>Anonymous Pro</li>    
 </ul>
 </div>
+
 <div> <b> Colors </b>
 <ul id=ul-colors onclick='colorset()'>
     <li>default</li>
@@ -27,7 +31,9 @@
     <li>zenburn</li>
 </ul>
 </div>
+
 </div>
+
 <pre id=main-text class='cpp'><code class='cpp'>#include &lt;stdio.h>
 #include &lt;stdint.h>
 #include "fizzbuzz.h"
