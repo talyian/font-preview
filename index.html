@@ -1,52 +1,27 @@
 <style>
  html, body { font-family: "Helvetica"; }
  #main-text { background:#999; padding:5px; }
- ul { list-style-type: none; margin:0px; padding:0px; }
- li { border:1px solid #999; padding:3px; cursor:hand; }
- li:hover { background:#ace; }
  #header>div { width:200px; display:inline-block; vertical-align:top; }
+ h4 { margin:5px 0px; padding:0px; }
+ .nf { color:#900; }
+ [type="radio"] { display:none; }
+ [type="radio"] + label { border:1px solid #ace; padding:2px; display:block; }
+ [type="radio"]:checked + label { background:#def; display:block; } 
 </style>
 
 <div id=header>
+  <div> <h4>Fonts</h4>
+    <span style=color:#a66>Nonfree fonts availability may not be available on your local system</span>
+    <div id=fontc> </div>
+  </div>
 
-<div> <b> Fonts </b>
-<ul id=ul-fonts onclick='ulclicked()'>
-    <li>Inconsolata</li>
-    <li>Monaco</li>
-    <li>Consolas</li>
-    <li>Lucida Console</li>
-    <li>Source Code Pro</li>
-    <li>Droid Sans Mono</li>
-    <li>Ubuntu Mono</li>
-    <li>Anonymous Pro</li>    
-</ul>
-</div>
+  <div> <h4> Colors </h4>
+    <div id=colorc> </div>
+  </div>
 
-<div> <b> Colors </b>
-<ul id=ul-colors onclick='colorset()'>
-    <li>default</li>
-    <li>agate</li>
-    <li>vs</li>
-    <li>vs2015</li>
-    <li>zenburn</li>
-</ul>
-</div>
-
-<div> <b> Sizes </b>
-    <input type='checkbox' id=ckNormalize checked>Normalize
-</input>
-<ul id=ul-colors onclick='sizeset()'>
-    <li>8</li>
-    <li>10</li>
-    <li>12</li>
-    <li>16</li>
-    <li>20</li>
-    <li>24</li>
-    <li>30</li>
-    <li>36</li>            
-</ul>
-</div>
-
+  <div> <h4> Sizes </h4>
+    <div id=sizec> </div>
+  </div>
 </div>
 
 <pre id=main-text class='cpp'><code class='cpp'>#include &lt;stdio.h>
@@ -63,7 +38,7 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
 }
 </code></pre>
 
-<link id=col-default rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" >
+<link id=col-default rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" disabled>
 <link id=col-agate rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/agate.min.css" disabled>
 <link id=col-vs rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs.min.css" disabled>
 <link id=col-vs2015 rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css" disabled>
@@ -77,53 +52,66 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
  @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
  @import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
  @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
- @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro'); 
+ @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
+ @import url('https://fonts.googleapis.com/css?family=Architects+Daughter');
 </style>
+<script>
+ function radio(a, b, c, ev) {
+     var e = document.createElement('input');
+     e.onchange=a.e;
+     e.type='radio';
+     e.name = a.name;
+     e.value = a.value;
+     e.id = a.id;
+     var l = document.createElement('label');
+     l.htmlFor = e.id;
+     l.innerText = b;
+     if (a.font) l.style.fontFamily = a.font;
+     if (a.nf) l.className = 'nf';
+     c.appendChild(e); c.appendChild(l);
+ }
+ var fonts = {
+     "Monaco": { nonfree: 1},
+     "Consolas": { nonfree: 1},
+     "Lucida Console": { nonfree: 1},
+     "Comic Sans MS": { nonfree: 1},
+     "Inconsolata" : 1,
+     "Source Code Pro" : 1,
+     "Droid Sans Mono" : 1,
+     "Ubuntu Mono" : 1,
+     "Anonymous Pro" : 1,               
+     "Architects Daughter" : 1,
+ }, i=0;
+ var fontc = document.getElementById('fontc'), fonti = 0;
+ function set_font(e) { codeElement.style.fontFamily = curfont = (e || window.event).target.value; }
+ for(var f in fonts) radio({name:'font',id:'font'+ ++i, value:f, e:set_font, font:f, nf:fonts[f].nonfree}, f, fontc);
+
+ var colors = {
+     "default" : "HighlightJS default",
+     "agate": "Agate",
+     "vs": "Visual Studio",
+     "vs2015": "Visual Studio 2015",
+     "zenburn": "Zenburn",
+ };
+ i=0;
+ var curcolor = 'default';
+ function set_color(e) {
+     document.getElementById('col-' + curcolor).disabled = true;
+     curcolor=(e||window.event).target.value;
+     document.getElementById('col-' + curcolor).disabled = false;
+ }
+ for(var c in colors) radio({name:'color',id:'color' + ++i,value:c, e: set_color}, colors[c], colorc);
+ i=0;
+ var sizes = [8, 10, 12, 16, 20, 24, 30, 36, 50];
+ function set_size(e) {
+     codeElement.style.fontSize = (e||window.event).target.value;
+ }
+ for(var j=0 ; j<sizes.length; j++) radio({id:'size'+ ++i, name:'size', value:sizes[j], e: set_size}, sizes[j], sizec);
+ window.onload = function() { font5.click(); color3.click(); size6.click(); }
+</script>
+
 <script>
  hljs.initHighlightingOnLoad();
  var codeElement = document.getElementById('main-text').children[0]
- function setFont(f) {
-     codeElement.style.fontFamily = f;
- }
- curfont='Inconsolata';
- cursize = 16;
- curcolor = 'default';
- function ulclicked(e) {
-     e = e || window.event;
-     font = e && e.target ? e.target.innerText : curfont;
-     setFont(font);
-     curfont = font;
-     sizeset(0, cursize);
- }
- function sizeset(e, cc) {
-     e = e || window.event;
-     var c = cc ? cc : e.target.innerText;
-     cursize = c;
-     if (ckNormalize.checked) {
-	 oc = c;
-	 ss = {
-	     'Inconsolata': 272,
-	     'Monaco': 344,
-	     'Consolas': 302,
-	     'Lucida Console': 260,
-	     'Source Code Pro': 320,
-	     'Droid Sans Mono': 338,
-	     'Ubuntu Mono': 260,
-	     'Anonymous Pro': 260,
-	 }[curfont];
-	 ratio = (ss - 20) / (260 - 20);
-	 c /= ratio;
-	 console.log(curfont, oc, ratio, c);
-     }
-     codeElement.style.fontSize = c || 0;
- }
- function colorset(e) {
-     e = e || window.event;
-     var c = e.target && e.target.innerText;
-     document.getElementById('col-' + curcolor).disabled = true;
-     document.getElementById('col-' + c).disabled = false;
-     curcolor = c;
- }
- ulclicked();
 </script>
 <a href="https://github.com/talyian/font-preview"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
