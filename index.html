@@ -43,18 +43,8 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
 <link id=col-vs rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs.min.css" disabled>
 <link id=col-vs2015 rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/vs2015.min.css" disabled>
 <link id=col-zenburn rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/zenburn.min.css" disabled>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/languages/cpp.min.js"></script>
-<!-- <script src='font-preview.js'> </script> -->
-<style>
- @import url('https://fonts.googleapis.com/css?family=Inconsolata');
- @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
- @import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
- @import url('https://fonts.googleapis.com/css?family=Ubuntu+Mono');
- @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
- @import url('https://fonts.googleapis.com/css?family=Architects+Daughter');
-</style>
 <script>
  function radio(a, b, c, ev) {
      var e = document.createElement('input');
@@ -75,16 +65,22 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
      "Consolas": { nonfree: 1},
      "Lucida Console": { nonfree: 1},
      "Comic Sans MS": { nonfree: 1},
-     "Inconsolata" : 1,
-     "Source Code Pro" : 1,
-     "Droid Sans Mono" : 1,
-     "Ubuntu Mono" : 1,
-     "Anonymous Pro" : 1,               
-     "Architects Daughter" : 1,
+     "Inconsolata" : { css: 'https://fonts.googleapis.com/css?family=Inconsolata'},
+     "Source Code Pro" : { css: 'https://fonts.googleapis.com/css?family=Source+Code+Pro'},
+     "Droid Sans Mono" : { css: 'https://fonts.googleapis.com/css?family=Droid+Sans+Mono'},
+     "Ubuntu Mono" : { css: 'https://fonts.googleapis.com/css?family=Ubuntu+Mono'},
+     "Anonymous Pro" : { css: 'https://fonts.googleapis.com/css?family=Anonymous+Pro'},
+     "Architects Daughter" : { css: 'https://fonts.googleapis.com/css?family=Architects+Daughter'},
  }, i=0;
  var fontc = document.getElementById('fontc'), fonti = 0;
  function set_font(e) { codeElement.style.fontFamily = curfont = (e || window.event).target.value; }
- for(var f in fonts) radio({name:'font',id:'font'+ ++i, value:f, e:set_font, font:f, nf:fonts[f].nonfree}, f, fontc);
+ for(var f in fonts) {
+     radio({name:'font',id:'font'+ ++i, value:f, e:set_font, font:f, nf:fonts[f].nonfree}, f, fontc);
+     if (fonts[f].css) {
+	 var e = document.createElement('style'); e.innerHTML = "@import url('"+fonts[f].css+"')";
+	 document.getElementsByTagName('head')[0].appendChild(e);
+     }
+ }
 
  var colors = {
      "default" : "HighlightJS default",
