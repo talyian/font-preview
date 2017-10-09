@@ -19,7 +19,7 @@
     <div id=colorc> </div>
   </div>
 
-  <div> <h4> Sizes </h4>
+  <div> <h4> Sizes (normalized) </h4>
     <div id=sizec> </div>
   </div>
 </div>
@@ -61,19 +61,23 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
      c.appendChild(e); c.appendChild(l);
  }
  var fonts = {
-     "Monaco": { nonfree: 1},
-     "Consolas": { nonfree: 1},
-     "Lucida Console": { nonfree: 1},
-     "Comic Sans MS": { nonfree: 1},
-     "Inconsolata" : { css: 'https://fonts.googleapis.com/css?family=Inconsolata'},
-     "Source Code Pro" : { css: 'https://fonts.googleapis.com/css?family=Source+Code+Pro'},
-     "Droid Sans Mono" : { css: 'https://fonts.googleapis.com/css?family=Droid+Sans+Mono'},
-     "Ubuntu Mono" : { css: 'https://fonts.googleapis.com/css?family=Ubuntu+Mono'},
-     "Anonymous Pro" : { css: 'https://fonts.googleapis.com/css?family=Anonymous+Pro'},
-     "Architects Daughter" : { css: 'https://fonts.googleapis.com/css?family=Architects+Daughter'},
+     "Monaco": { nonfree: 1, s50: 848},
+     "Consolas": { nonfree: 1, s50: 752},
+     "Lucida Console": { nonfree: 1, s50: 650},
+     "Comic Sans MS": { nonfree: 1, s50: 884},
+     "Inconsolata" : { css: 'https://fonts.googleapis.com/css?family=Inconsolata', s50: 680},
+     "Source Code Pro" : { css: 'https://fonts.googleapis.com/css?family=Source+Code+Pro', s50: 800},
+     "Droid Sans Mono" : { css: 'https://fonts.googleapis.com/css?family=Droid+Sans+Mono', s50: 848},
+     "Ubuntu Mono" : { css: 'https://fonts.googleapis.com/css?family=Ubuntu+Mono', s50: 650},
+     "Anonymous Pro" : { css: 'https://fonts.googleapis.com/css?family=Anonymous+Pro', s50: 650},
+     "Architects Daughter" : { css: 'https://fonts.googleapis.com/css?family=Architects+Daughter', s50: 884},
  }, i=0;
  var fontc = document.getElementById('fontc'), fonti = 0;
- function set_font(e) { codeElement.style.fontFamily = curfont = (e || window.event).target.value; }
+ 
+ function set_font(e) {
+     codeElement.style.fontFamily = curfont = (e || window.event).target.value;
+     set_size(0, cursize)
+ }
  for(var f in fonts) {
      radio({name:'font',id:'font'+ ++i, value:f, e:set_font, font:f, nf:fonts[f].nonfree}, f, fontc);
      if (fonts[f].css) {
@@ -90,7 +94,7 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
      "zenburn": "Zenburn",
  };
  i=0;
- var curcolor = 'default';
+ var curcolor = 'default', cursize=24;
  function set_color(e) {
      document.getElementById('col-' + curcolor).disabled = true;
      curcolor=(e||window.event).target.value;
@@ -99,8 +103,9 @@ void FizzBuzzer::fizzBuzz(int32_t n) {
  for(var c in colors) radio({name:'color',id:'color' + ++i,value:c, e: set_color}, colors[c], colorc);
  i=0;
  var sizes = [8, 10, 12, 16, 20, 24, 30, 36, 50];
- function set_size(e) {
-     codeElement.style.fontSize = (e||window.event).target.value;
+ function set_size(e, size) {
+     cursize = size || (e||window.event).target.value;
+     codeElement.style.fontSize =  cursize * 650 / fonts[curfont].s50;
  }
  for(var j=0 ; j<sizes.length; j++) radio({id:'size'+ ++i, name:'size', value:sizes[j], e: set_size}, sizes[j], sizec);
  window.onload = function() { font5.click(); color3.click(); size6.click(); }
